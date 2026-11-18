@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MyTracker | Fortnite Stats</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+ background:#090b10;color:#f5f5f5;
+ font-family:Arial,sans-serif;
+}
+header{
+ height:75px;background:#10131b;
+ border-bottom:1px solid #252a36;
+ display:flex;align-items:center;justify-content:space-between;
+ padding:0 7%;
+}
+.logo{font-size:25px;font-weight:900;letter-spacing:1px}
+.logo span{color:#ff3434}
+.online{font-size:12px;color:#aaa}
+main{max-width:1100px;margin:45px auto;padding:0 20px}
+.hero{text-align:center;margin-bottom:35px}
+.hero h1{font-size:38px;margin-bottom:10px}
+.hero h1 span{color:#ff3434}
+.hero p{color:#858b99;font-size:14px}
+.search{
+ background:#141823;border:1px solid #282e3d;
+ border-radius:14px;padding:22px;margin-bottom:35px;
+}
+.search label{font-size:12px;color:#999;display:block;margin-bottom:12px}
+.controls{display:flex;gap:10px}
+input,select{
+ background:#090c13;border:1px solid #303747;
+ color:white;border-radius:8px;padding:14px;
+ font-size:14px;min-width:0;
+}
+input{flex:1}
+select{width:135px}
+button{
+ background:#ff3434;color:white;border:0;
+ padding:0 25px;border-radius:8px;
+ font-weight:bold;cursor:pointer;
+}
+button:hover{background:#d91f1f}
+#message{color:#aaa;font-size:13px;margin-top:13px}
+.profile{
+ display:none;align-items:center;gap:17px;
+ background:#141823;border:1px solid #282e3d;
+ border-radius:14px;padding:22px;margin-bottom:22px;
+}
+.avatar{
+ width:65px;height:65px;border-radius:15px;
+ background:#ff3434;display:grid;place-items:center;
+ font-size:28px;font-weight:bold;
+}
+.profile h2{font-size:23px;margin-bottom:6px}
+.profile p{color:#888;font-size:12px}
+.section-title{font-size:18px;margin:30px 0 15px}
+.modes{display:flex;gap:9px;margin-bottom:18px}
+.mode{
+ padding:11px 20px;background:#171c28;
+ border:1px solid #303747;color:#aaa;
+ border-radius:8px;cursor:pointer;font-size:13px;
+}
+.mode.active{background:#ff3434;color:white;border-color:#ff3434}
+.cards{
+ display:grid;grid-template-columns:repeat(4,1fr);gap:14px;
+}
+.card{
+ background:#141823;border:1px solid #282e3d;
+ border-radius:12px;padding:22px;
+}
+.card .label{color:#9299a8;font-size:12px;margin-bottom:13px}
+.card .value{font-size:29px;font-weight:bold}
+.card .icon{font-size:19px;margin-bottom:15px}
+.extra{
+ display:grid;grid-template-columns:repeat(2,1fr);
+ gap:14px;margin-top:14px;
+}
+.extra .card{padding:20px}
+footer{text-align:center;color:#555;font-size:12px;padding:45px 15px}
+@media(max-width:650px){
+ main{margin:30px auto}
+ .hero h1{font-size:29px}
+ .controls{flex-wrap:wrap}
+ input{flex-basis:100%;width:100%}
+ select{flex:1}
+ button{height:45px;flex:1}
+ .cards{grid-template-columns:repeat(2,1fr)}
+ .card{padding:17px}
+ .card .value{font-size:24px}
+}
+</style>
+</head>
+<body>
+
+<header>
+ <div class="logo">MY<span>TRACKER</span></div>
+ <div class="online">● FORTNITE TRACKER</div>
+</header>
+
+<main>
+ <section class="hero">
+  <h1>PLAYER <span>TRACKER</span></h1>
+  <p>Track your Fortnite performance.</p>
+ </section>
+
+ <section class="search">
+  <label>SEARCH PLAYER</label>
+  <div class="controls">
+   <input id="player" placeholder="Enter Epic username">
+   <select id="platform">
+    <option value="epic">Epic Games</option>
+    <option value="psn">PlayStation</option>
+    <option value="xbl">Xbox</option>
+   </select>
+   <button onclick="searchPlayer()">SEARCH</button>
+  </div>
+  <div id="message">Search for a Fortnite player to view their stats.</div>
+ </section>
+
+ <section class="profile" id="profile">
+  <div class="avatar">M</div>
+  <div>
+   <h2 id="playerName">Player</h2>
+   <p id="playerPlatform">FORTNITE PLAYER</p>
+  </div>
+ </section>
+
+ <div id="stats" style="display:none">
+  <h3 class="section-title">GAME MODE</h3>
+  <div class="modes">
+   <button class="mode active" onclick="changeMode('overall',this)">Overall</button>
+   <button class="mode" onclick="changeMode('solo',this)">Solo</button>
+   <button class="mode" onclick="changeMode('duo',this)">Duo</button>
+   <button class="mode" onclick="changeMode('squad',this)">Squad</button>
+  </div>
+
+  <h3 class="section-title">PERFORMANCE</h3>
+  <section class="cards">
+   <div class="card">
+    <div class="icon">🏆</div>
+    <div class="label">VICTORY ROYALES</div>
+    <div class="value" id="wins">—</div>
+   </div>
+   <div class="card">
+    <div class="icon">💀</div>
+    <div class="label">ELIMINATIONS</div>
+    <div class="value" id="kills">—</div>
+   </div>
+   <div class="card">
+    <div class="icon">🎯</div>
+    <div class="label">K/D RATIO</div>
+    <div class="value" id="kd">—</div>
+   </div>
+   <div class="card">
+    <div class="icon">📈</div>
+    <div class="label">WIN RATE</div>
+    <div class="value" id="winrate">—</div>
+   </div>
+  </section>
+
+  <h3 class="section-title">MORE STATISTICS</h3>
+  <section class="extra">
+   <div class="card">
+    <div class="label">MATCHES PLAYED</div>
+    <div class="value" id="matches">—</div>
+   </div>
+   <div class="card">
+    <div class="label">MINUTES PLAYED</div>
+    <div class="value" id="minutes">—</div>
+   </div>
+  </section>
+ </div>
+</main>
+
+<footer>MYTRACKER © 2026 | UNOFFICIAL FORTNITE TRACKER</footer>
+
+<script>
+let playerData=null;
+
+function changeMode(mode,button){
+ document.querySelectorAll(".mode").forEach(b=>b.classList.remove("active"));
+ button.classList.add("active");
+ showStats(mode);
+}
+
+function showStats(mode){
+ if(!playerData)return;
+
+ const stats=playerData.data?.stats?.all?.[mode];
+
+ if(!stats){
+  document.getElementById("message").textContent=
+   "No statistics available for this game mode.";
+  return;
+ }
+
+ document.getElementById("wins").textContent=stats.wins??"—";
+ document.getElementById("kills").textContent=stats.kills??"—";
+ document.getElementById("kd").textContent=stats.kd??"—";
+ document.getElementById("winrate").textContent=
+  stats.winRate!=null?stats.winRate+"%":"—";
+ document.getElementById("matches").textContent=stats.matches??"—";
+ document.getElementById("minutes").textContent=stats.minutesPlayed??"—";
+}
+
+async function searchPlayer(){
+ const name=document.getElementById("player").value.trim();
+ const platform=document.getElementById("platform").value;
+ const message=document.getElementById("message");
+
+ if(!name){
+  message.textContent="Enter a username first.";
+  return;
+ }
+
+ message.textContent="Searching player...";
+ document.getElementById("stats").style.display="none";
+ document.getElementById("profile").style.display="none";
+
+ try{
+  const response=await fetch(
+   `/api/player?name=${encodeURIComponent(name)}&platform=${platform}`
+  );
+  const result=await response.json();
+
+  if(!response.ok)throw new Error(result.error||"Player not found.");
+
+  playerData=result;
+  const account=result.data?.account;
+  document.getElementById("playerName").textContent=account?.name||name;
+  document.getElementById("playerPlatform").textContent=platform.toUpperCase()+" PLAYER";
+  document.getElementById("profile").style.display="flex";
+  document.getElementById("stats").style.display="block";
+  document.getElementById("message").textContent="Player statistics loaded.";
+
+  document.querySelectorAll(".mode").forEach(b=>b.classList.remove("active"));
+  document.querySelector(".mode").classList.add("active");
+  showStats("overall");
+
+ }catch(error){
+  message.textContent="Error: "+error.message;
+ }
+}
+</script>
+</body>
+</html>
