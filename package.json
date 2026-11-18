@@ -1,0 +1,16 @@
+{
+  "name": "mytracker",
+  "version": "1.1.0",
+  "description": "Fortnite stats tracker",
+  "main": "Server.js",
+  "scripts": {
+    "start": "node Server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
